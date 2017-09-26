@@ -1,0 +1,9 @@
+h1, h2, h3 {
+	font-size: 18px;
+	font-weight: bolder;
+	color: red;
+}
+
+list-group-item {
+	border: 0px;
+}

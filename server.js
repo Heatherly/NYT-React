@@ -5,7 +5,7 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 
 // Require Articles Schema
-var Articles = require("./models/Articles");
+var Articles = require("./server/models/Articles");
 
 // Create Instance of Express
 var app = express();
@@ -39,7 +39,7 @@ db.once("open", function() {
 
 // Main "/" Route. This will redirect the user to our rendered React application
 app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/public/index.html");
+  res.sendFile(__dirname + "/client/public/index.html");
 });
 
 // This is the route we will send GET requests to retrieve our most recent search data.

@@ -15,7 +15,7 @@ var Main = React.createClass({
   // Here we set a generic state associated with the number of clicks
   // Note how we added in this history state variable
   getInitialState: function() {
-    return {searchTerm: "", startYear: "", endYear: "", results: ""};
+    return {searchTerm: "", startYear: "", endYear: "", apiResults: [] };
   },
 
   // If the component changes (i.e. if a search is entered)...
@@ -31,7 +31,7 @@ var Main = React.createClass({
     // Run the query for the article search
     helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear).then(function(data) {
         console.log(data);
-        this.setState({ results: data });
+        this.setState({ apiResults: data });
 
         }.bind(this));
     }
@@ -61,7 +61,7 @@ var Main = React.createClass({
         <div className="row">
           <div className="col-md-12">
 
-           <Results term={this.state.term} results={this.state.results} />
+           <Results term={this.state.term} apiResults={this.state.apiResults} />
 
           </div>
         </div>
