@@ -21,7 +21,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 app.use(express.static("public"));
 
-// -------------------------------------------------
+// ------- DATABASE CONNECTION ------------------------------------------
 
 // MongoDB Configuration configuration (Change this URL to your own DB)
 mongoose.connect("mongodb://localhost/nytreact");
@@ -37,19 +37,18 @@ db.once("open", function() {
 
 // -------------------------------------------------
 
-// Main "/" Route. This will redirect the user to our rendered React application
 app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/client/public/index.html");
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 // This is the route we will send GET requests to retrieve our most recent search data.
 // We will call this route the moment our page gets rendered
 app.get("/api", function(req, res) {
 
-  // We will find all the records, sort it in descending order, then limit the records to 5
+  // We will find all the records, sort it in descending order, then limit the records to 10
   Articles.find({}).sort([
     ["date", "descending"]
-  ]).limit(5).exec(function(err, doc) {
+  ]).limit(10).exec(function(err, doc) {
     if (err) {
       console.log(err);
     }
@@ -60,28 +59,64 @@ app.get("/api", function(req, res) {
 });
 
 // This is the route we will send POST requests to save each search.
-app.post("/api", function(req, res) {
-  console.log("BODY: " + req.body.title);
+app.post("/api/saved", function(req, res) {
+  console.log("BODY: " + req.body);
 
-  // Here we'll save the title based on the JSON input.
-  // We'll use Date.now() to always get the current date time
-  Articles.create({
-    title: req.body.title,
-    date: Date.now(),
-    url: req.body.url
-  }, function(err) {
+ var article = new Articles (req.body);
+
+  // Save the article to MongoDB
+  article.save(function(err, doc) {
+    // log any errors
     if (err) {
       console.log(err);
-    }
+      res.sendStatus(400);
+    } 
+    // or log the doc that was saved to the DB
     else {
-      res.send("Saved Search");
+      console.log(doc);
+      res.sendStatus(200);
     }
   });
+//   // Here we'll save the title based on the JSON input.
+//   // We'll use Date.now() to always get the current date time
+//   Articles.create({
+//     title: req.body.title,
+//     date: Date.now(),
+//     url: req.body.url
+//   }, function(err) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     else {
+//       res.send("Saved Search");
+//     }
+//   });
 });
 
-// -------------------------------------------------
+// API DELETE - your components will use this to delete a saved article in the database
+app.post("/api/delete/:articleMongoId", function(req, res) {
+  console.log(req.params.articleMongoId)
+  Articles.findByIdAndRemove(req.params.articleMongoId, function (err, todo) {
+    if (err) {
+      // Send Failure Header
+      console.log(err);      
+      res.sendStatus(400);
+    } 
+    else {
+      // Send Success Header
+      res.sendStatus(200);
+    }
+  });
+
+});
+
+// // CATCH ALL "*" - This redirect user to the "/" route for any unknown cases
+app.get("*", function(req, res) {
+  res.redirect("/");
+});
 
 // Listener
 app.listen(PORT, function() {
   console.log("App listening on PORT: " + PORT);
 });
+

@@ -2,82 +2,61 @@
 var React = require("react");
 
 // Here we include all of the sub-components
-var Form = require("./children/Form");
-var Results = require("./children/Results");
-var Articles = require("./children/Articles");
+var Search = require("./children/Search");
+var Saved = require("./children/Saved");
 
 // Helper for making AJAX requests to our API
 var helpers = require("./utils/helpers");
 
 // Creating the Main component
-var Main = React.createClass({
+class Main extends React.Component {
+    constructor() {
+    super();
 
-  // Here we set a generic state associated with the number of clicks
-  // Note how we added in this history state variable
-  getInitialState: function() {
-    return {searchTerm: "", startYear: "", endYear: "", apiResults: [] };
-  },
-
-  // If the component changes (i.e. if a search is entered)...
-  componentDidUpdate: function(prevProps, prevState) {
-
-     // If we have a new search term, run a new search
-    if (prevState.term !== this.state.term) {
-      console.log("UPDATED");
-      // console.log(this.state.term);
-      // console.log(this.state.startYear);
+    this.state = {
+      mongoResults: []
+    };
+}
 
 
-    // Run the query for the article search
-    helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear).then(function(data) {
-        console.log(data);
-        this.setState({ apiResults: data });
+ // After the Main renders, collect the saved articles from the API endpoint
+  componentDidMount() {
 
-        }.bind(this));
-    }
-  },
-  // This function allows childrens to update the parent.
-  setQuery: function(term, startYear, endYear) {
-    this.setState({ term: term, startYear: startYear, endYear: endYear });
-  },
+    // Hit the Mongo API to get saved articles
+    helpers.apiGet().then(function(query){
+      this.setState({ mongoResults: query.data });
+    }.bind(this));
+
+  }
+
+  resetMongoResults(newData){
+    this.setState({ mongoResults: newData} );
+  }
+
   // Here we render the function
-  render: function() {
+  render() {
     return (
       <div className="container">
         <div className="row">
-          <div className="jumbotron">
-            <h2 className="text-center">New York Times Scrapper!</h2>
-            <p className="text-center">
-              <em>Enter your search term and date range below.</em>
-            </p>
-          </div>
-
+          
           <div className="col-md-12">
 
-            <Form setQuery={this.setQuery}/>
+            <Search mongoResults={this.state.mongoResults} resetMongoResults={this.resetMongoResults} />
 
           </div>
         </div>
         <div className="row">
           <div className="col-md-12">
 
-           <Results term={this.state.term} apiResults={this.state.apiResults} />
-
-          </div>
-        </div>
-
-        
-
-        <div className="row">
-
-         {/* <Articles history={this.state.history} /> */}
+        <Saved mongoResults={this.state.mongoResults} resetMongoResults={this.resetMongoResults} />
 
         </div>
 
       </div>
+    </div>
     );
   }
-});
+};
 
 // Export the component back for use in other files
 module.exports = Main;

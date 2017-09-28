@@ -24,10 +24,61 @@ var helper = {
     return axios.get("/api");
   },
 
-  // This function posts new searches to our database.
-  // postArticles: function(title) {
-  //   return axios.post("/api", { title: title });
-  // }
+// API Post Request Function
+  apiSave: function(articleObj){
+
+  // Get API Post URL (this allows it to work in both localhost and heroku)
+  var apiURL = window.location.origin + '/api/saved';
+
+  // Create a JavaScript *Promise*
+  return new Promise(function (fulfill, reject){
+
+    // Re-format the article Object to match the Mongo Model (ie we need to take off the the id)
+    var params = new URLSearchParams();
+    params.append("title", articleObj.title);
+    params.append("date", articleObj.date);
+    params.append("url", articleObj.url);
+    axios.post(apiURL, params).then(function(response){
+
+      // Error handling / fullfil promise if successful query
+      if(response){
+        fulfill(response);
+      }
+      else{
+        reject("");
+      }
+      
+    })
+
+  });
+  
+},
+
+// API Post Request Function
+  apiGet: function(query){
+
+  // Get API Post URL (this allows it to work in both localhost and heroku)
+  var apiURL = window.location.origin + '/api';
+
+  // Create a JavaScript *Promise*
+  return new Promise(function (fulfill, reject){
+
+    // Re-format the article Object to match the Mongo Model (ie we need to take off the the id)
+    axios.get(apiURL).then(function(response) {
+
+      // Error handling / fullfil promise if successful query
+      if(response){
+        fulfill(response);
+      }
+      else{
+        reject("");
+      }
+
+    });
+    
+  });
+  
+}
 };
 
 // We export the API helper
