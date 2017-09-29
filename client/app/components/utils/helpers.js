@@ -78,7 +78,34 @@ var helper = {
     
   });
   
+},
+
+// API Post Request Function
+apiDelete: function(deleteArticleId){
+
+  // Get API Post URL (this allows it to work in both localhost and heroku)
+  var apiURL = window.location.origin + '/api/delete/' + deleteArticleId;
+
+  // Create a JavaScript *Promise*
+  return new Promise(function (fulfill, reject){
+
+    // Send the MongoDB Id for deletion
+    axios.post(apiURL).then(function(response) {
+
+      // Error handling / fullfil promise if successful query
+      if(response){
+        fulfill(response);
+      }
+      else{
+        reject("");
+      }
+
+    });
+
+  });
+
 }
+
 };
 
 // We export the API helper

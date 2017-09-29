@@ -14,6 +14,8 @@ class Saved extends React.Component {
     // this.state = {
     //   arrayOfArticles: []
     // };
+
+    this.handleDelete = this.handleDelete.bind(this);
 }
 
   handleDelete(event) {
@@ -29,7 +31,7 @@ class Saved extends React.Component {
 
       // Query Mongo Again for new Data (this will re-render the component to account for deletion)
       helpers.apiGet().then(function(query){
-        that.props.resetMongoResults(query.data);
+        this.props.resetMongoResults(query.data);
       });
 
     });
@@ -38,6 +40,7 @@ class Saved extends React.Component {
   }
   // Here we describe this component's render method
   render() {
+    console.log(this.props.mongoResults);
     return (
       <div className="panel panel-default">
 
@@ -49,14 +52,14 @@ class Saved extends React.Component {
           <ul className="list-group col-md-12">
 
             {/* Iterate over mongoResults array from parent (Main.js)*/} 
-            {this.props.mongoResults.map(function(search, i)  {
+            {this.props.mongoResults.map((search, i) => {
               return (
                 <li key={search._id} className="list-group-item">
                   <p className="pub-date">
                   <a href={search.url} target="_new" className="headline">{search.title}</a>
                       {search.date.substring(0, 10)}</p>
 
-                      <button className="btn btn-success" type="button" onClick={that._handleDelete} value={search._id}>Remove</button>
+                      <button className="btn btn-success" type="button" onClick={this.handleDelete} value={search._id}>Remove</button>
                 </li>
               );
             })}

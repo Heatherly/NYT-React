@@ -3,6 +3,10 @@
 // Include React
 var React = require("react");
 
+// Helper for making AJAX requests to our API
+var helpers = require("../../utils/helpers");
+
+
 // Creating the Results component to display to results of our API search
 class Results extends React.Component {
   constructor(props) {
@@ -11,10 +15,15 @@ class Results extends React.Component {
     this.state = {
       arrayOfArticles: []
     };
+
+
+    this.handleSave = this.handleSave.bind(this);
 }
 
-handleSave(event){
 
+
+handleSave(event){
+console.log("handleSave called");
     // Collect the clicked article's id
     var articleId = event.target.value;
 
@@ -35,11 +44,11 @@ handleSave(event){
       // Re-set the Mongo data to account for a change in database (i.e. added an article)
       // By Querying Mongo Again for new Data, this will re-render the components in saved.jsx
       helpers.apiGet().then(function(query){
-        that.props.resetMongoResults(query.data);
+        this.props.resetMongoResults(query.data);
       });
 
 
-    }.bind(this))
+    });
 
 }
 
@@ -73,7 +82,7 @@ handleSave(event){
                   <a href={article.web_url} target="_new" className="headline">{article.headline.main}</a>
                       {article.pub_date.substring(0, 10)}</p>
 
-                      <button className="btn btn-success" type="button" onClick={that._handleSave} value={article._id}>Save</button>
+                      <button className="btn btn-success" type="button" onClick={that.handleSave} value={article._id}>Save</button>
                 </li>
               );
             })}
