@@ -68,7 +68,7 @@ render() {
         <div className="row">
           <div className="col-md-12">
 
-          <Results term={this.state.term} apiResults={this.state.apiResults}/>
+          <Results term={this.state.term} apiResults={this.state.apiResults} resetMongoResults={this.props.resetMongoResults} />
 
           </div>
         </div>

@@ -39,11 +39,11 @@ console.log("handleSave called");
     var that = this;
 
     // Send this data to the API endpoint to save it to Mongo
-    helpers.apiSave(saveArticleObj).then(function(){
+    helpers.apiSave(saveArticleObj).then(() => {
 
       // Re-set the Mongo data to account for a change in database (i.e. added an article)
       // By Querying Mongo Again for new Data, this will re-render the components in saved.jsx
-      helpers.apiGet().then(function(query){
+      helpers.apiGet().then((query) => {
         this.props.resetMongoResults(query.data);
       });
 
@@ -55,7 +55,7 @@ console.log("handleSave called");
   // Here we render the function
   render() {
         // http://stackoverflow.com/questions/29810914/react-js-onclick-cant-pass-value-to-method
-    var that = this;
+    // var that = this;
     return (
 
       <div className="panel panel-default">
@@ -68,9 +68,9 @@ console.log("handleSave called");
           <ul className="list-group col-md-12">
 
             {/* Iterate over apiResults array from parent (Search.js) while pushing the results "down" to this child and into it's articles array*/}
-            {this.props.apiResults.map(function(article, i) {
+            {this.props.apiResults.map((article, i) => {
               // Build array of articles
-              that.state.arrayOfArticles.push({
+              this.state.arrayOfArticles.push({
                 id: article._id,
                 title: article.headline.main,
                 date: article.pub_date,
@@ -82,7 +82,7 @@ console.log("handleSave called");
                   <a href={article.web_url} target="_new" className="headline">{article.headline.main}</a>
                       {article.pub_date.substring(0, 10)}</p>
 
-                      <button className="btn btn-success" type="button" onClick={that.handleSave} value={article._id}>Save</button>
+                      <button className="btn btn-success" type="button" onClick={this.handleSave} value={article._id}>Save</button>
                 </li>
               );
             })}

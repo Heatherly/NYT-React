@@ -27,10 +27,10 @@ class Saved extends React.Component {
     var that = this;
 
     // Send this data to the API endpoint to save it to Mongo
-    helpers.apiDelete(articleMongoId).then(function(){
+    helpers.apiDelete(articleMongoId).then(() => {
 
       // Query Mongo Again for new Data (this will re-render the component to account for deletion)
-      helpers.apiGet().then(function(query){
+      helpers.apiGet().then((query) => {
         this.props.resetMongoResults(query.data);
       });
 

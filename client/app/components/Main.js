@@ -16,8 +16,9 @@ class Main extends React.Component {
     this.state = {
       mongoResults: []
     };
-}
 
+this.resetMongoResults = this.resetMongoResults.bind(this);
+}
 
  // After the Main renders, collect the saved articles from the API endpoint
   componentDidMount() {
