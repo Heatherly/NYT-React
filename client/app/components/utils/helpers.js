@@ -7,14 +7,14 @@ var authKey = "b9f91d369ff59547cd47b931d8cbc56b:0:74623931";
 // Helper functions for making API Calls
 var helper = {
 
-  // This function serves our purpose of running the query to geolocate.
+  // This function serves our purpose of running the query to NY Timse API.
   runQuery: function(term, startYear, endYear) {
     // Search for articles
     var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + authKey + "&q=" + term + "&begin_date=" + startYear + "0101&end_date=" + endYear + "1231&sort=newest" ;
 
     return axios.get(queryURL).then(function(response) {
 
-      console.log(response.data.response.docs);
+      // console.log(response.data.response.docs);
       return response.data.response.docs;
     });
   },

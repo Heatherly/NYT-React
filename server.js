@@ -77,20 +77,6 @@ app.post("/api/saved", function(req, res) {
       res.sendStatus(200);
     }
   });
-//   // Here we'll save the title based on the JSON input.
-//   // We'll use Date.now() to always get the current date time
-//   Articles.create({
-//     title: req.body.title,
-//     date: Date.now(),
-//     url: req.body.url
-//   }, function(err) {
-//     if (err) {
-//       console.log(err);
-//     }
-//     else {
-//       res.send("Saved Search");
-//     }
-//   });
 });
 
 // API DELETE - your components will use this to delete a saved article in the database

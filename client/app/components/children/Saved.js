@@ -11,10 +11,6 @@ class Saved extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   arrayOfArticles: []
-    // };
-
     this.handleDelete = this.handleDelete.bind(this);
 }
 
@@ -24,23 +20,21 @@ class Saved extends React.Component {
     var articleMongoId = event.target.value;
 
     // Copy "this" into "that" so that component is accessible inside the functions.
-    var that = this;
+    // var that = this;
 
     // Send this data to the API endpoint to save it to Mongo
     helpers.apiDelete(articleMongoId).then(() => {
 
-      // Query Mongo Again for new Data (this will re-render the component to account for deletion)
+      //Refresh this component to account for deletion
       helpers.apiGet().then((query) => {
-        this.props.resetMongoResults(query.data);
+        this.props.refreshMongoResults(query.data);
       });
 
     });
-
-
   }
-  // Here we describe this component's render method
+  
   render() {
-    console.log(this.props.mongoResults);
+    // console.log(this.props.mongoResults);
     return (
       <div className="panel panel-default">
 

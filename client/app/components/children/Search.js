@@ -1,5 +1,3 @@
- // API RESULTS HERE
-
  //Use Grandchild component 'Results' to map over and format each result from the API
 // Include React
 var React = require("react");
@@ -27,25 +25,20 @@ class Search extends React.Component {
     this.setQuery = this.setQuery.bind(this);
   }
 
-
 componentDidUpdate(prevProps, prevState) {
 
  // If we have a new search term, run a new search
     if (prevState.term !== this.state.term) {
-      console.log("UPDATED");
-      console.log(this.state.term);
-      console.log(this.state.startYear);
-
+      // console.log("UPDATED");
 	helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear).then(function(data) {
-        console.log(data);
+        // console.log(data);
         this.setState({ apiResults: data });
 
         }.bind(this));
     };
   }
 
-
- //  // This function allows the child Query to update the parent.
+// This function allows the child Query to update the parent Search.js
 setQuery(term, startYear, endYear) {
     this.setState({ term: term, startYear: startYear, endYear: endYear });
   }
@@ -59,16 +52,16 @@ render() {
              </div>
 	       
 	       <div className="row">
-		    <div className="col-md-12">
+  		     <div className="col-md-12">
+            
+             <Query setQuery={this.setQuery}/>
 
-				<Query setQuery={this.setQuery}/>
-
-        	 </div>
            </div>
-        <div className="row">
+         </div>
+         <div className="row">
           <div className="col-md-12">
 
-          <Results term={this.state.term} apiResults={this.state.apiResults} resetMongoResults={this.props.resetMongoResults} />
+          <Results term={this.state.term} apiResults={this.state.apiResults} refreshMongoResults={this.props.refreshMongoResults} />
 
           </div>
         </div>

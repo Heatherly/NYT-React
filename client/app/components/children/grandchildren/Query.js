@@ -26,14 +26,14 @@ class Query extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("Passing Query to Search parent");
-    console.log(this.state.term, this.state.startYear, this.state.endYear);
+    // console.log("Passing Query to Search parent");
+    // console.log(this.state.term, this.state.startYear, this.state.endYear);
     this.props.setQuery(this.state.term, this.state.startYear, this.state.endYear);
     //gives the properties up to Search to perform API Search
     this.setState({ term: "", startYear: "", endYear: "" });
   }
-  // Here we describe this component's render method
- render() {
+
+  render() {
     return (
       <div id="query">
         <form id="queryForm" onSubmit={this.handleSubmit}>

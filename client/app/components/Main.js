@@ -17,7 +17,7 @@ class Main extends React.Component {
       mongoResults: []
     };
 
-this.resetMongoResults = this.resetMongoResults.bind(this);
+this.refreshMongoResults = this.refreshMongoResults.bind(this);
 }
 
  // After the Main renders, collect the saved articles from the API endpoint
@@ -30,11 +30,10 @@ this.resetMongoResults = this.resetMongoResults.bind(this);
 
   }
 
-  resetMongoResults(newData){
+  refreshMongoResults(newData){
     this.setState({ mongoResults: newData} );
   }
 
-  // Here we render the function
   render() {
     return (
       <div className="container">
@@ -42,14 +41,14 @@ this.resetMongoResults = this.resetMongoResults.bind(this);
           
           <div className="col-md-12">
 
-            <Search mongoResults={this.state.mongoResults} resetMongoResults={this.resetMongoResults} />
+            <Search mongoResults={this.state.mongoResults} refreshMongoResults={this.refreshMongoResults} />
 
           </div>
         </div>
         <div className="row">
           <div className="col-md-12">
 
-        <Saved mongoResults={this.state.mongoResults} resetMongoResults={this.resetMongoResults} />
+        <Saved mongoResults={this.state.mongoResults} refreshMongoResults={this.refreshMongoResults} />
 
         </div>
 
